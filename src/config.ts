@@ -25,6 +25,7 @@ export const config = {
   maxConcurrentDownloads: optionalInt("MAX_CONCURRENT_DOWNLOADS", 3),
   downloadTimeoutMs: optionalInt("DOWNLOAD_TIMEOUT_MS", 600_000),
   localApiUrl: process.env["LOCAL_API_URL"] || "",
+  cookiesPath: optional("COOKIES_PATH", "/app/cookies.txt"),
   get maxFileSizeBytes(): number {
     return this.maxFileSizeMB * 1024 * 1024;
   },

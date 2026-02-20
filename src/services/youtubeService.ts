@@ -1,4 +1,6 @@
 import { spawn } from "node:child_process";
+import fs from "node:fs";
+import { config } from "../config.js";
 import { logger } from "../utils/logger.js";
 
 export interface FormatOption {
@@ -149,12 +151,19 @@ export function extractYoutubeUrl(text: string): string | null {
 }
 
 export async function getVideoInfo(url: string): Promise<VideoInfo> {
-  const raw = await runProcess("yt-dlp", [
+  const args = [
     "--dump-json",
     "--no-warnings",
     "--no-playlist",
-    url,
-  ]);
+  ];
+
+  if (config.cookiesPath && fs.existsSync(config.cookiesPath)) {
+    args.push("--cookies", config.cookiesPath);
+  }
+
+  args.push(url);
+
+  const raw = await runProcess("yt-dlp", args);
 
   const data: YtDlpJson = JSON.parse(raw);
   const duration = data.duration || 0;

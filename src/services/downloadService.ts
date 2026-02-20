@@ -1,5 +1,6 @@
 import { spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
 import fs from "node:fs";
+import { existsSync } from "node:fs";
 import path from "node:path";
 import { config } from "../config.js";
 import { logger } from "../utils/logger.js";
@@ -116,8 +117,13 @@ export async function downloadVideo(
     "--newline",
     "--progress-template", "%(progress._percent_str)s %(progress._speed_str)s",
     "-o", outputTemplate,
-    url,
   ];
+
+  if (config.cookiesPath && existsSync(config.cookiesPath)) {
+    args.push("--cookies", config.cookiesPath);
+  }
+
+  args.push(url);
 
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
@@ -155,8 +161,13 @@ export async function downloadAudio(
     "--newline",
     "--progress-template", "%(progress._percent_str)s %(progress._speed_str)s",
     "-o", outputTemplate,
-    url,
   ];
+
+  if (config.cookiesPath && existsSync(config.cookiesPath)) {
+    args.push("--cookies", config.cookiesPath);
+  }
+
+  args.push(url);
 
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
