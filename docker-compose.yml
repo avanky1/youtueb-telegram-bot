@@ -25,10 +25,10 @@ services:
       MAX_CONCURRENT_DOWNLOADS: 3
       DOWNLOAD_TIMEOUT_MS: 1200000
       LOCAL_API_URL: http://telegram-bot-api:8081
-      COOKIES_PATH: /app/cookies.txt
+      COOKIES_PATH: /app/cookies/cookies.txt
     volumes:
       - ./downloads:/app/downloads
-      - ./cookies.txt:/app/cookies.txt:ro
+      - ./cookies:/app/cookies:ro
 
 volumes:
   bot-api-data:
