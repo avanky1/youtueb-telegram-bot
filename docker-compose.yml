@@ -1,0 +1,32 @@
+services:
+  telegram-bot-api:
+    image: aiogram/telegram-bot-api:latest
+    container_name: telegram-bot-api
+    restart: unless-stopped
+    environment:
+      TELEGRAM_API_ID: ${TELEGRAM_API_ID}
+      TELEGRAM_API_HASH: ${TELEGRAM_API_HASH}
+      TELEGRAM_LOCAL: "true"
+    ports:
+      - "8081:8081"
+    volumes:
+      - bot-api-data:/var/lib/telegram-bot-api
+
+  bot:
+    build: .
+    container_name: yt-bot
+    restart: unless-stopped
+    depends_on:
+      - telegram-bot-api
+    environment:
+      BOT_TOKEN: ${BOT_TOKEN}
+      DOWNLOAD_DIR: /app/downloads
+      MAX_FILE_SIZE_MB: 2000
+      MAX_CONCURRENT_DOWNLOADS: 3
+      DOWNLOAD_TIMEOUT_MS: 600000
+      LOCAL_API_URL: http://telegram-bot-api:8081
+    volumes:
+      - ./downloads:/app/downloads
+
+volumes:
+  bot-api-data:

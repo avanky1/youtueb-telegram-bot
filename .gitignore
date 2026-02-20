@@ -1,0 +1,7 @@
+node_modules/
+dist/
+downloads/
+.env
+*.js.map
+*.d.ts
+downloads
